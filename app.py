@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from services.quest_service import QuestService
+from services.poi_manage_service import PoiManageService
 
 app = Flask(__name__)
 
@@ -20,9 +21,7 @@ def quest_view_action(quest_id: int):
 
 @app.post("/poi")
 def poi_create_action():
-    return {
-        'success': True
-    }
+    return PoiManageService().create_from_request(request)
 
 
 @app.post("/stage")

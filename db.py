@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Column, Integer, String, Float, UniqueConstraint, Enum, DateTime
+from sqlalchemy import Column, Integer, String, Float, UniqueConstraint, Enum, DateTime, ForeignKey, Table
 from sqlalchemy.ext.declarative import declarative_base
 import enum
 
@@ -34,11 +34,20 @@ class PoiModel(Base):
         self.lng = kwargs['lng']
         self.radius = kwargs['lng']
 
+
 class StageStatus(enum.Enum):
     cancelled = -1
     new = 0
     in_process = 1
     done = 2
+
+
+question_stage_table = Table(
+    "question_stage",
+    Base.metadata,
+    Column("question_id", ForeignKey("questions.id"), primary_key=True),
+    Column("stage_id", ForeignKey("stages.id"), primary_key=True),
+)
 
 
 class Stage(Base):
@@ -54,17 +63,18 @@ class Stage(Base):
     cancelled = Column(DateTime, nullable=True)
 
 
-class StageQuestion(Base):
-    __tablename__ = "question_stage"
+class Question(Base):
+    __tablename__ = "questions"
 
-    question_id = Column(Integer)
-    stage_id = Column(Integer)
-
-    UniqueConstraint('question_id', 'stage_id')
+    id = Column(Integer, primary_key=True)
+    text = Column(String(1000))
 
 
 class History(Base):
     __tablename__ = "history"
+
+    id = Column(Integer, primary_key=True)
+    message = Column(String(1000))
 
 
 Base.metadata.create_all(engine)

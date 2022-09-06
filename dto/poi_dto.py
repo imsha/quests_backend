@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from lat_lng_dto import LatLngDto
+from dto.lat_lng_dto import LatLngDto
 
 
 @dataclass
