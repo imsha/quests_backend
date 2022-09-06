@@ -21,7 +21,12 @@ def quest_view_action(quest_id: int):
 
 @app.post("/poi")
 def poi_create_action():
-    return PoiManageService().create_from_request(request)
+    return PoiManageService().create_from_request(request).to_dict()
+
+
+@app.put("/poi/<int:poi_id>")
+def poi_update_action(poi_id: int):
+    return PoiManageService().update_from_request(poi_id, request).to_dict()
 
 
 @app.post("/stage")

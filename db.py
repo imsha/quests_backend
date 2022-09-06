@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Column, Integer, String, Float, UniqueConstraint, Enum, DateTime, ForeignKey, Table
+from sqlalchemy import Column, Integer, String, Float, Enum, DateTime, ForeignKey, Table
 from sqlalchemy.ext.declarative import declarative_base
 import enum
 
