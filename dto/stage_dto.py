@@ -1,10 +1,13 @@
 from dataclasses import dataclass
-from poi_dto import PoiDto
-from stage_status_dto import StageStatusDto
+
+from dto.base_dto import BaseDto
 
 
 @dataclass
-class StageDto:
+class StageDto(BaseDto):
+    id: int
     name: str
-    poi: PoiDto
-    status: StageStatusDto
+    quest_id: int
+    poi_id: int
+    author_id: int
+    sort: int

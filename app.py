@@ -1,6 +1,7 @@
-from flask import Flask, jsonify, request
+from flask import Flask, request
 from services.quest_service import QuestService
 from services.poi_manage_service import PoiManageService
+from services.stage_manage_service import StageManageService
 
 app = Flask(__name__)
 
@@ -31,13 +32,15 @@ def poi_update_action(poi_id: int):
 
 @app.post("/stage")
 def state_create_action():
-    return {
-        'success': True
-    }
+    return StageManageService().create_from_request(request).to_dict()
 
-# todo логика poi в простом варианте
-#       широта, долгота, радиус
-#       название
+
+@app.delete("/stage/<int:stage_id>")
+def state_create_action():
+    # todo если уже выполняются квесты, то помечай удаленным, если квестов не было, то удаляй из базы запись
+    return [123]
+
+# todo Дальше сделай создание вопросов и ответов и привязку, затем привязку их к stage
 
 # todo логика квеста
 #       один-ко-многим poi, порядковый номер прохождения, идентификатор не зависящий от порядкового номера

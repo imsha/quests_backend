@@ -42,7 +42,6 @@ class PoiManageService:
             return poi_instance.id
 
     def update(self, poi_dto: PoiDto) -> PoiDto:
-        print(poi_dto.__dict__)
         with Session as session:
             poi = session.query(PoiModel).get(poi_dto.id)
             if not poi:

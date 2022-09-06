@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Column, Integer, String, Float, Enum, DateTime, ForeignKey, Table
+from sqlalchemy import Column, Integer, String, Float, Boolean, ForeignKey, Table
 from sqlalchemy.ext.declarative import declarative_base
 import enum
 
@@ -10,6 +10,12 @@ engine = create_engine(DATABASE_URI, echo=True, future=True)
 Session = sessionmaker(engine, expire_on_commit=False)()
 
 Base = declarative_base()
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True)
 
 
 class Quest(Base):
@@ -50,24 +56,38 @@ question_stage_table = Table(
 )
 
 
-class Stage(Base):
+class StateModel(Base):
     __tablename__ = "stages"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(1000))
-    quest_id = Column(Integer)
-    poi_id = Column(Integer)
-    status = Column(Enum(StageStatus))
-    started = Column(DateTime, nullable=True)
-    done = Column(DateTime, nullable=True)
-    cancelled = Column(DateTime, nullable=True)
+    quest_id = Column(Integer, ForeignKey("quests.id"))
+    poi_id = Column(Integer, ForeignKey("poi.id"))
+    author_id = Column(Integer, ForeignKey("users.id"))
+    sort = Column(Integer)
+
+    # todo вынести в отдельную модель прохождения квеста
+    # status = Column(Enum(StageStatus))
+    # started = Column(DateTime, nullable=True)
+    # done = Column(DateTime, nullable=True)
+    # cancelled = Column(DateTime, nullable=True)
 
 
-class Question(Base):
+class QuestionModel(Base):
     __tablename__ = "questions"
 
     id = Column(Integer, primary_key=True)
     text = Column(String(1000))
+    author_id = Column(Integer, ForeignKey("users.id"))
+
+
+class AnswerModel(Base):
+    __tablename__ = "answers"
+
+    id = Column(Integer, primary_key=True)
+    text = Column(String(1000))
+    question_id = Column(Integer, ForeignKey("questions.id"))
+    is_true = Column(Boolean)
 
 
 class History(Base):
